@@ -7,7 +7,7 @@ Also, read through the docs linked under the "Contributing to the Codebase" sect
 
 Before you begin, create a folder for this team wherever you want to store any GitHub repos that you will be cloning on your device in this cohort. You can name it include, platform_team, or literally anything you want to. If you choose to name it "include", **do not use a '#' in your folder name**, it'll cause a bunch of problems later.
 
-## 1. NODE.JS
+## 1. Node.js
 
 Node.js is a runtime environment that is used to run Javascript code. It comes with the Node Package Manager (npm) that helps us manage the Javascript packages used in our project. To set up node.js:
 
@@ -24,7 +24,7 @@ Node.js is a runtime environment that is used to run Javascript code. It comes w
 **If you already have node**  
 Try to update your node version to roughly v21.1.0 so you don't get random warnings.
 
-## 2. ESLINT EXTENSION
+## 2. ESLint Extension
 
 ESLint is an extension that ensures that your code adheres to certain code style. It also auto-formats your code on save in VSCode. To enable it:
 
@@ -32,19 +32,56 @@ ESLint is an extension that ensures that your code adheres to certain code style
 2. Once it is installed, open your Command Palette by pressing **Ctrl + SHift + P**/**Command + Shift + P** and search for **Preferences: Open Workspace Settings (JSON)**. Open the file and add this code into the file. This will autoformat your code on save and also configure tab sizes:
 
    ```json
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
-    },
-    "eslint.validate": [
-        "javascript"
-    ],
-    "[javascriptreact]": {
-        "editor.indentSize": 2
+    {
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "eslint.validate": [
+            "javascript",
+            "typescript",
+        ],
+        "[javascriptreact]": {
+            "editor.indentSize": 2
+        },
+        "[javascript]": {
+            "editor.indentSize": 2
+        },
+        "[typescriptreact]": {
+            "editor.indentSize": 2
+        },
+        "[typescript]": {
+            "editor.indentSize": 2
+        },
+        "[jsonc]": {
+            "editor.indentSize": 2
+        },
     }
    ```
 
-## 3. Optional Extension
-- Auto Rename Tag — useful for JSX
+## 3. PostgreSQL
+1. Install Postgres by following this tutorial: https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database#setting-up-postgresql-on-windows
+2. Follow this tutorial to create a user and create a database: https://commandprompt.com/education/how-to-create-user-create-database-grant-privileges-in-postgresql/
+3. Grant the user you just created CREATEDB permissions with the command ```ALTER USER username CREATEDB;```
+
+## 4. DBeaver
+By now, you should have a database and user created in postgres. This means you can try connecting to it in DBeaver, a nice UI tool that allows you to view your database and also view ER diagrams.
+1. Connect to your database by clicking the new database connection in the top left corner. It should look like a Plug with a green + sign.
+2. Choose Postgres when asked for Database type.
+3. You should only have to change 3 things: "Database", "Username", and "Password". Change those to the name of the database you created, the name of your user, and the password you chose for that user.
+4. If it works, then you should be able to click into the database connection and view the contents by going through it like a file structure. The path for our data will be ```Databases --> [dbname] --> Schemas --> public```. There shouldn't really be anything to see but if you can click around the "file structure" it means you're connected.
+
+## 5. Environment File
+Create a file called ```.env``` in the root of the codebase and paste in the following (replace ```username```, ```password```, and ```db_name``` to fit your own information which is the same as what you input into DBeaver).
+```
+DATABASE_URL="postgresql://username:password@localhost:5432/db_name?schema=public"
+```
+
+## 6. Other Extensions
+For Prisma file highlighting: https://marketplace.visualstudio.com/items?itemName=Prisma.prisma
+
+For GraphQL schema highlighting: https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql-syntax
+
+Auto Rename Tag — useful for JSX
 
 ## Getting Started
 Set up:
@@ -63,7 +100,11 @@ Run a linting test:
 npm run lint
 ```
 
-# Contributing to the Codebase
+## Migrations
+If you want to reset the database, or if your migration history is not in sync with the database, try running: ```npx prisma migrate dev```.  
+This will reset your database and make sure your database is in sync with the prisma schema.
+
+# Contributing to the Codebase - Frontend
 ## React Resources
 - https://react.dev/learn/tutorial-tic-tac-toe
 - https://react.dev/reference/react/useState
@@ -141,4 +182,50 @@ You'll see that there are folders defined with square brackets around the name s
 - https://medium.com/@nadinCodeHat/rest-api-naming-conventions-and-best-practices-1c4e781eb6a5
 
 **Note**
-If your app only has a frontend, feel free to delete the `(api)` folder. 
+If your app only has a frontend, feel free to delete the `(api)` folder. If it does have a backend, keep reading!
+
+# Contributing to the Codebase - Backend
+## Adding a new Data Type
+### Prisma
+Prisma is our ORM (object relational mapping). It allows us to manipulate our database without writing raw SQL(which is very error prone). It transforms our CRUD operations into an object oriented style.
+
+**Documentation to read through for Prisma**
+- https://www.prisma.io/docs/concepts/components/prisma-schema/data-model#defining-fields
+- https://www.prisma.io/docs/concepts/components/prisma-schema/relations
+- https://www.prisma.io/docs/concepts/components/prisma-client/crud
+
+Prisma also creates database migrations for us. Database Migrations are effectively incremental SQL commands that are fed to our database one by one to change schemas or seed the database.
+
+**Resources on Database Migrations**
+- https://www.astera.com/type/blog/database-migration-what-it-is-and-how-it-is-done/
+
+To create a new data type, your first step is to create a new ```[DataType].schema``` file in the /prisma/models folder where the datatype name is **singular** (Post, User, Song, Playlist, UserInterface, ColorPalette).
+
+After you're done making the schema, run ```npm run schema:gen``` to compile it. Prisma does not support multifile schemas so we had to use a bash script to combine it into schema.prisma manually.
+
+### GraphQL
+GraphQL is our REST API alternative. We are running an Apollo/GraphQL server on express. GraphQL has the benefit of allowing us to specify the structure of the data we want back from the server. This way, we avoid receiving excess data.
+
+**Resources on GraphQL/Apollo**  
+These are pulled from https://www.apollographql.com/tutorials/browse
+- https://www.apollographql.com/tutorials/lift-off-part1
+- https://www.apollographql.com/tutorials/lift-off-part2
+- https://www.apollographql.com/tutorials/lift-off-part3
+- https://www.apollographql.com/tutorials/lift-off-part4
+
+#### TypeDefs
+When creating a new DataType, similarly to the Prisma schema, you have to define the schema in GraphQL, using the same DataType and field names as you did in the prisma file. To do so, add a file called ```[DataType].js``` in the /src/typeDefs folder once again using **singular** names for the datatype.
+
+After creating the ```[DataType].js``` file, add it to the /src/typeDefs/index.js
+
+#### Resolvers
+GraphQL allows you to add fields to your typeDefs that do not correlate to a field in the database. When this happens, you have to define how GraphQL should handle the request. You can also use resolvers to define queries and mutations in GraphQL.
+
+To do so, add a file called ```[DataType].js``` in the /src/resolvers folder once again using **singular** names for the datatype.
+
+After creating the ```[DataType].js``` file, add it to the /src/resolvers/index.js
+
+#### Services
+Services are not built into GraphQL, but most people split the functionality from resolvers into the definitions and the actual logic behind the scenes. Our codebase defines these functions as static methods to a class that has the same name as the DataType but **PURAL**.
+
+Create a ```[DataType(s)].js``` file in /src/services and copy the template from other files.
