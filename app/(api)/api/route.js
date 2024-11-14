@@ -8,6 +8,7 @@ import resolvers from './_resolvers/index';
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  introspection: process.env.NODE_ENV !== 'production',
 });
 
 const handler = startServerAndCreateNextHandler(server);
