@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint && npx tsc",
     "schema:gen": "run-script-os",
@@ -14,6 +14,8 @@
     "db:view": "npx prisma studio"
   },
   "dependencies": {
+    "@apollo/client": "^3.11.10",
+    "@apollo/experimental-nextjs-app-support": "^0.11.6",
     "@apollo/server": "^4.11.2",
     "@as-integrations/next": "^3.1.0",
     "@prisma/client": "^5.21.1",

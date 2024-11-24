@@ -1,6 +1,5 @@
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
-// import { NextRequest } from 'next/server';
 
 import typeDefs from './_typeDefs/index';
 import resolvers from './_resolvers/index';
