@@ -1,10 +1,13 @@
 'use server';
 
+import { revalidatePath, revalidateTag } from 'next/cache';
+
 import handler from '@datalib/apolloServer';
 
 export default async function handleApolloRequest(
   query: string,
-  variables: object
+  variables: object,
+  revalidate?: { path?: string; type?: 'page' | 'layout'; tag?: string }
 ) {
   const headers = {
     'Content-Type': 'application/json',
@@ -21,6 +24,9 @@ export default async function handleApolloRequest(
   });
 
   const res = await handler(req);
+
+  if (revalidate?.path) revalidatePath(revalidate.path, revalidate.type);
+  if (revalidate?.tag) revalidateTag(revalidate.tag);
 
   return res.json();
 }
