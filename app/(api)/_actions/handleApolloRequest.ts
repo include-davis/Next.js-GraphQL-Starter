@@ -7,7 +7,7 @@ import handler from '@datalib/apolloServer';
 export default async function handleApolloRequest(
   query: string,
   variables: object,
-  revalidate?: { path?: string; type?: 'page' | 'layout'; tag?: string }
+  revalidateCache?: { path?: string; type?: 'page' | 'layout'; tag?: string }
 ) {
   const headers = {
     'Content-Type': 'application/json',
@@ -25,8 +25,12 @@ export default async function handleApolloRequest(
 
   const res = await handler(req);
 
-  if (revalidate?.path) revalidatePath(revalidate.path, revalidate.type);
-  if (revalidate?.tag) revalidateTag(revalidate.tag);
+  if (revalidateCache?.path) {
+    revalidatePath(revalidateCache.path, revalidateCache.type);
+  }
+  if (revalidateCache?.tag) {
+    revalidateTag(revalidateCache.tag);
+  }
 
   return res.json();
 }
