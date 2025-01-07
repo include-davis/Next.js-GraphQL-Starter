@@ -7,39 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Playlist {
-  id        String           @id @default(uuid())
-  name      String
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  songs     PlaylistToSong[]
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+model Club {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  rating      Int
+  reviews     Review[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
-model PlaylistToSong {
-  playlistId String
-  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
-  songId     String
-  song       Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@id(name: "id", fields: [playlistId, songId])
-}
-
-model Song {
-  id        String           @id @default(uuid())
-  name      String
-  playlists PlaylistToSong[]
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-}
-
-model User {
-  id        String     @id @default(uuid())
-  name      String
-  playlists Playlist[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+model Review {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  rating      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Club        Club?    @relation(fields: [clubId], references: [id])
+  clubId      String?
 }
