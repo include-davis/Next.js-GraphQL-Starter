@@ -15,7 +15,8 @@ const typeDefs = gql`
     name: String!
     description: String!
     rating: Int!
-    clubID: String!
+    clubReviewed: Club!
+    clubID: String
   }
 
   type Query {

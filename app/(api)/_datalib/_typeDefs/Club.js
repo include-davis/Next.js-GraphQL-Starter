@@ -14,7 +14,7 @@ const typeDefs = gql`
     name: String!
     description: String!
     rating: Int
-    
+    reviews: [Review]
   }
 
   type Query {
