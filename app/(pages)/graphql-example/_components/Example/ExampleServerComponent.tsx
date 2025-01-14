@@ -1,7 +1,6 @@
 import { gql } from 'graphql-tag';
 
 import sendApolloRequest from '@utils/sendApolloRequest';
-import { revalidatePath } from 'next/cache';
 
 const query = gql`
   query UserQuery($ids: [ID]!) {
@@ -21,7 +20,6 @@ const variables = {
 };
 
 export default async function ExampleServerComponent() {
-  revalidatePath('/graphql-example');
   const users = await sendApolloRequest(query, variables);
 
   return (
