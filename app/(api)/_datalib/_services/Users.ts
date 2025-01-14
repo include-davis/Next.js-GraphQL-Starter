@@ -1,8 +1,9 @@
-import prisma from '../_prisma/client.js';
+import { UserInput } from '@datatypes/User';
+import prisma from '../_prisma/client';
 
 export default class Users {
   // CREATE
-  static async create({ input }) {
+  static async create(input: UserInput) {
     const { name } = input;
     const user = await prisma.user.create({
       data: {
@@ -13,7 +14,7 @@ export default class Users {
   }
 
   // READ
-  static async find({ id }) {
+  static async find(id: string) {
     return prisma.user.findUnique({
       where: {
         id,
@@ -21,7 +22,8 @@ export default class Users {
     });
   }
 
-  static async findMany({ ids }) {
+  static async findMany(ids: string[]) {
+    if (ids.length === 0) return prisma.user.findMany();
     return prisma.user.findMany({
       where: {
         id: {
@@ -32,7 +34,7 @@ export default class Users {
   }
 
   // UDPATE
-  static async update({ id, input }) {
+  static async update(id: string, input: UserInput) {
     try {
       const user = await prisma.user.update({
         where: {
@@ -47,7 +49,7 @@ export default class Users {
   }
 
   // DELETE
-  static async delete({ id }) {
+  static async delete(id: string) {
     try {
       await prisma.user.delete({
         where: {
@@ -61,10 +63,10 @@ export default class Users {
   }
 
   // OTHER
-  static async getPlaylists({ id }) {
+  static async getPlaylists(userId: string) {
     return prisma.playlist.findMany({
       where: {
-        userId: id,
+        userId,
       },
     });
   }

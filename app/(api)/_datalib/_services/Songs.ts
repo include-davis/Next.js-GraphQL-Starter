@@ -1,8 +1,9 @@
-import prisma from '../_prisma/client.js';
+import prisma from '../_prisma/client';
+import { SongInput } from '@datatypes/Song';
 
 export default class Songs {
   // CREATE
-  static async create({ input }) {
+  static async create(input: SongInput) {
     const { name } = input;
     const song = await prisma.song.create({
       data: {
@@ -13,7 +14,7 @@ export default class Songs {
   }
 
   // READ
-  static async find({ id }) {
+  static async find(id: string) {
     return prisma.song.findUnique({ where: { id } });
   }
 
