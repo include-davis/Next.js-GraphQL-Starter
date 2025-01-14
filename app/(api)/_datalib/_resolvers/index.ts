@@ -1,10 +1,11 @@
 import { mergeResolvers } from '@graphql-tools/merge';
+import type { IResolvers } from '@graphql-tools/utils';
 
-import User from './User.js';
-import Playlist from './Playlist.js';
-import Song from './Song.js';
+import User from './User';
+import Playlist from './Playlist';
+import Song from './Song';
 
-const allResolvers = [];
+const allResolvers: IResolvers[] = [];
 
 const modules = [User, Playlist, Song];
 modules.forEach((module) => {

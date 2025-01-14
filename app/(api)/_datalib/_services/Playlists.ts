@@ -1,8 +1,9 @@
-import prisma from '../_prisma/client.js';
+import prisma from '../_prisma/client';
+import { PlaylistInput } from '@datatypes/Playlist';
 
 export default class Playlists {
   // CREATE
-  static async create({ userId, input }) {
+  static async create(userId: string, input: PlaylistInput) {
     const { name } = input;
     const playlist = await prisma.playlist.create({
       data: {
@@ -14,7 +15,7 @@ export default class Playlists {
   }
 
   // READ
-  static async find({ id }) {
+  static async find(id: string) {
     return prisma.playlist.findUnique({ where: { id } });
   }
 
@@ -23,7 +24,7 @@ export default class Playlists {
   }
 
   // OTHER
-  static async addSong({ playlistId, songId }) {
+  static async addSong(playlistId: string, songId: string) {
     try {
       await prisma.playlistToSong.create({
         data: {
@@ -37,7 +38,7 @@ export default class Playlists {
     }
   }
 
-  static async getSongs({ id }) {
+  static async getSongs(id: string) {
     const songIds = await prisma.playlistToSong.findMany({
       where: {
         playlistId: id,
