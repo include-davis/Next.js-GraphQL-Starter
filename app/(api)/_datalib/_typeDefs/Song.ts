@@ -17,7 +17,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createSong(input: SongInput!): Song
+    createSong(input: SongInput!, revalidatePath: String!): Song
   }
 `;
 export default typeDefs;

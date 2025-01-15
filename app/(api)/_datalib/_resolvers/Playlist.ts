@@ -14,10 +14,12 @@ const resolvers = {
   Mutation: {
     createPlaylist: (
       _: never,
-      args: { userId: string; input: PlaylistInput }
-    ) => Playlists.create(args.userId, args.input),
-    addSong: (_: never, args: { playlistId: string; songId: string }) =>
-      Playlists.addSong(args.playlistId, args.songId),
+      args: { userId: string; input: PlaylistInput; revalidatePath: string }
+    ) => Playlists.create(args.userId, args.input, args.revalidatePath),
+    addSong: (
+      _: never,
+      args: { playlistId: string; songId: string; revalidatePath: string }
+    ) => Playlists.addSong(args.playlistId, args.songId, args.revalidatePath),
   },
 };
 export default resolvers;
