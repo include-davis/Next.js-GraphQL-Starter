@@ -1,15 +1,9 @@
-import { revalidatePath } from 'next/cache';
-
 import prisma from '../_prisma/client';
 import { PlaylistInput } from '@datatypes/Playlist';
 
 export default class Playlists {
   // CREATE
-  static async create(
-    userId: string,
-    input: PlaylistInput,
-    revalidateCachePath: string
-  ) {
+  static async create(userId: string, input: PlaylistInput) {
     const { name } = input;
     const playlist = await prisma.playlist.create({
       data: {
@@ -17,7 +11,6 @@ export default class Playlists {
         name,
       },
     });
-    revalidatePath(revalidateCachePath);
     return playlist;
   }
 
@@ -31,11 +24,7 @@ export default class Playlists {
   }
 
   // OTHER
-  static async addSong(
-    playlistId: string,
-    songId: string,
-    revalidateCachePath: string
-  ) {
+  static async addSong(playlistId: string, songId: string) {
     try {
       await prisma.playlistToSong.create({
         data: {
@@ -43,7 +32,6 @@ export default class Playlists {
           songId,
         },
       });
-      revalidatePath(revalidateCachePath);
       return true;
     } catch (e) {
       return false;

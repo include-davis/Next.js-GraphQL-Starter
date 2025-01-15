@@ -10,10 +10,8 @@ const resolvers = {
     songs: () => Songs.findAll(),
   },
   Mutation: {
-    createSong: (
-      _: never,
-      args: { input: SongInput; revalidatePath: string }
-    ) => Songs.create(args.input, args.revalidatePath),
+    createSong: (_: never, args: { input: SongInput }) =>
+      Songs.create(args.input),
   },
 };
 export default resolvers;

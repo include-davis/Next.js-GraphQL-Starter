@@ -10,16 +10,11 @@ const resolvers = {
     users: (_: never, args: { ids: string[] }) => Users.findMany(args.ids),
   },
   Mutation: {
-    createUser: (
-      _: never,
-      args: { input: UserInput; revalidatePath: string }
-    ) => Users.create(args.input, args.revalidatePath),
-    updateUser: (
-      _: never,
-      args: { id: string; input: UserInput; revalidatePath: string }
-    ) => Users.update(args.id, args.input, args.revalidatePath),
-    deleteUser: (_: never, args: { id: string; revalidatePath: string }) =>
-      Users.delete(args.id, args.revalidatePath),
+    createUser: (_: never, args: { input: UserInput }) =>
+      Users.create(args.input),
+    updateUser: (_: never, args: { id: string; input: UserInput }) =>
+      Users.update(args.id, args.input),
+    deleteUser: (_: never, args: { id: string }) => Users.delete(args.id),
   },
 };
 

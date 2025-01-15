@@ -19,12 +19,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createPlaylist(
-      userId: ID!
-      input: PlaylistInput!
-      revalidatePath: String!
-    ): Playlist
-    addSong(playlistId: ID!, songId: ID!, revalidatePath: String!): Boolean
+    createPlaylist(userId: ID!, input: PlaylistInput!): Playlist
+    addSong(playlistId: ID!, songId: ID!): Boolean
   }
 `;
 export default typeDefs;

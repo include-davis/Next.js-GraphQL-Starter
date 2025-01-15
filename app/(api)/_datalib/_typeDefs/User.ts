@@ -17,9 +17,9 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(input: UserInput!, revalidatePath: String!): User
-    updateUser(id: ID!, input: UserInput!, revalidatePath: String!): User
-    deleteUser(id: ID!, revalidatePath: String!): Boolean
+    createUser(input: UserInput!): User
+    updateUser(id: ID!, input: UserInput!): User
+    deleteUser(id: ID!): Boolean
   }
 `;
 export default typeDefs;

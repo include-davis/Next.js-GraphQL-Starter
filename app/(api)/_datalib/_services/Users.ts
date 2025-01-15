@@ -1,18 +1,15 @@
-import { revalidatePath } from 'next/cache';
-
 import { UserInput } from '@datatypes/User';
 import prisma from '../_prisma/client';
 
 export default class Users {
   // CREATE
-  static async create(input: UserInput, revalidateCachePath: string) {
+  static async create(input: UserInput) {
     const { name } = input;
     const user = await prisma.user.create({
       data: {
         name,
       },
     });
-    revalidatePath(revalidateCachePath);
     return user;
   }
 
@@ -37,11 +34,7 @@ export default class Users {
   }
 
   // UDPATE
-  static async update(
-    id: string,
-    input: UserInput,
-    revalidateCachePath: string
-  ) {
+  static async update(id: string, input: UserInput) {
     try {
       const user = await prisma.user.update({
         where: {
@@ -49,7 +42,6 @@ export default class Users {
         },
         data: input,
       });
-      revalidatePath(revalidateCachePath);
       return user;
     } catch (e) {
       return null;
@@ -57,14 +49,13 @@ export default class Users {
   }
 
   // DELETE
-  static async delete(id: string, revalidateCachePath: string) {
+  static async delete(id: string) {
     try {
       await prisma.user.delete({
         where: {
           id,
         },
       });
-      revalidatePath(revalidateCachePath);
       return true;
     } catch (e) {
       return false;
