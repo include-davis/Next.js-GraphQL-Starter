@@ -1,5 +1,6 @@
 import prisma from '../_prisma/client';
 import { PlaylistInput } from '@datatypes/Playlist';
+import revalidateCache from '@actions/revalidateCache';
 
 export default class Playlists {
   // CREATE
@@ -11,6 +12,7 @@ export default class Playlists {
         name,
       },
     });
+    revalidateCache(['playlists']);
     return playlist;
   }
 
@@ -32,6 +34,7 @@ export default class Playlists {
           songId,
         },
       });
+      revalidateCache(['playlists', 'songs']);
       return true;
     } catch (e) {
       return false;
@@ -54,7 +57,7 @@ export default class Playlists {
         },
       },
     });
-
+    revalidateCache(['playlists', 'songs']);
     return songs;
   }
 }
