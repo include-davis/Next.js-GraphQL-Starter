@@ -29,6 +29,7 @@
     "@actions/*": ["./app/(api)/_actions/*"],
     "@datalib/*": ["./app/(api)/_datalib/*"],
     "@datatypes/*": ["./app/(api)/_types/*"],
+    "@cache/*": ["./app/(api)/_cache/*"],
     }
   },
   "include": ["nextEnv.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

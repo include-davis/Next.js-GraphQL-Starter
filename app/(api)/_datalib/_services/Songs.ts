@@ -1,5 +1,6 @@
 import prisma from '../_prisma/client';
 import { SongInput } from '@datatypes/Song';
+import revalidateCache from '@actions/revalidateCache';
 
 export default class Songs {
   // CREATE
@@ -10,6 +11,7 @@ export default class Songs {
         name,
       },
     });
+    revalidateCache(['songs']);
     return song;
   }
 
